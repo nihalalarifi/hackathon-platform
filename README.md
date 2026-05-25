@@ -1,6 +1,6 @@
 # Hackathon Management Platform
 
-A full-stack platform for managing hackathon events, built with a Flutter web frontend and a Flask REST API backend. It supports four user roles — participant, mentor, judge, and organizer — each with tailored features for managing teams, mentoring sessions, judging, and event scheduling.
+A full stack platform for managing hackathon events, built with a Flutter web frontend and a Flask REST API backend. It supports four user roles participant, mentor, judge, and organizer each with tailored features for managing teams, mentoring sessions, judging, and event scheduling.
 
 ## Why We Built This
 
@@ -8,13 +8,13 @@ Organizing a hackathon involves coordinating many moving parts: team formation, 
 
 ## Features
 
-- **Role-based access control** — four distinct roles (Participant, Mentor, Judge, Organizer), each with a dedicated dashboard and permissions
-- **Team management** — participants can create teams, invite others, and view team status in real time
-- **Mentoring sessions** — mentors can schedule, edit, and delete sessions; participants can view and book them by team
-- **Judging system** — judges can select and remove winners with full audit visibility
-- **Event scheduling** — organizers can create and manage the hackathon schedule
-- **JWT authentication** — secure stateless auth with token-based session management
-- **Flutter web frontend** — single-page app with a dark cyberpunk-inspired UI, runs in any browser
+- **Role-based access control** : four distinct roles (Participant, Mentor, Judge, Organizer), each with a dedicated dashboard and permissions
+- **Team management** : participants can create teams, invite others, and view team status in real time
+- **Mentoring sessions** : mentors can schedule, edit, and delete sessions; participants can view and book them by team
+- **Judging system** : judges can select and remove winners with full audit visibility
+- **Event scheduling** : organizers can create and manage the hackathon schedule
+- **JWT authentication** : secure stateless auth with token based session management
+- **Flutter web frontend** : single-page app with a dark cyberpunk-inspired UI, runs in any browser
 
 ## Tech Stack
 
@@ -121,7 +121,7 @@ Generate a strong key with: `python3 -c "import secrets; print(secrets.token_hex
 
 The hardest problem was designing a single REST API that serves four completely different user roles without duplicating logic or exposing restricted endpoints.
 
-The solution was a JWT-based token system that encodes the user's role at login, combined with a reusable `token_required` decorator that validates the token on every protected route. Role-specific routes simply check the decoded role field and return 403 if it does not match — keeping authorization logic co-located with each route rather than scattered across middleware layers. This made it straightforward to add the mentor edit/delete endpoints later without touching the auth system at all.
+The solution was a JWT-based token system that encodes the user's role at login, combined with a reusable `token_required` decorator that validates the token on every protected route. Role specific routes simply check the decoded role field and return 403 if it does not match keeping authorization logic co-located with each route rather than scattered across middleware layers. This made it straightforward to add the mentor edit/delete endpoints later without touching the auth system at all.
 
 ## License
 
