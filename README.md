@@ -1,153 +1,127 @@
-# Hackathon Platform
+# Hackathon Management Platform
 
-A full-stack hackathon management platform built for a 24-hour hackathon competition. It handles participant registration, team formation, mentor session scheduling, judge scoring, and event scheduling through a REST API backend and a Flutter web frontend.
-
----
+A full-stack platform for managing hackathon events, built with a Flutter web frontend and a Flask REST API backend. It supports four user roles — participant, mentor, judge, and organizer — each with tailored features for managing teams, mentoring sessions, judging, and event scheduling.
 
 ## Why We Built This
 
-Managing a hackathon involves coordinating dozens of moving parts — participants forming teams, mentors booking sessions, judges selecting winners, and organizers tracking the schedule. Existing tools are either too generic or too heavyweight for a single-event hackathon. We built a purpose-specific platform that gives every role (participant, mentor, judge, organizer) their own dedicated interface and permissions, all running from a single deployable stack.
-
----
+Organizing a hackathon involves coordinating many moving parts: team formation, mentoring sessions, judging, and scheduling — typically handled through disconnected spreadsheets and group chats. This platform centralizes everything into one system, giving each role exactly the tools they need without the noise of everything else.
 
 ## Features
 
-- **Role-based access control** — four distinct roles (Participant, Mentor, Judge, Organizer) each with scoped permissions and dedicated API endpoints
-- **Team management** — participants can create teams, join existing ones, and leave; team state is persisted in a relational database
-- **Mentor session system** — mentors can create, update, and delete advisory sessions; participants can browse and book available slots
-- **Judge winner selection** — judges can nominate and remove winning teams through a protected API
-- **Event schedule management** — organizers can post and update the hackathon schedule visible to all participants
-- **JWT authentication** — stateless token-based auth with role enforcement on every protected endpoint
-- **Flutter web frontend** — cross-platform UI built in Dart, communicating with the backend over HTTP
-
----
+- **Role-based access control** — four distinct roles (Participant, Mentor, Judge, Organizer), each with a dedicated dashboard and permissions
+- **Team management** — participants can create teams, invite others, and view team status in real time
+- **Mentoring sessions** — mentors can schedule, edit, and delete sessions; participants can view and book them by team
+- **Judging system** — judges can select and remove winners with full audit visibility
+- **Event scheduling** — organizers can create and manage the hackathon schedule
+- **JWT authentication** — secure stateless auth with token-based session management
+- **Flutter web frontend** — single-page app with a dark cyberpunk-inspired UI, runs in any browser
 
 ## Tech Stack
 
 | Technology | Purpose |
 |---|---|
-| Python 3.8+ | Backend language |
-| Flask | REST API framework |
-| Flask-SQLAlchemy | ORM and database management |
-| SQLite | Lightweight relational database |
-| Flask-CORS | Cross-origin request handling for Flutter web |
-| PyJWT | JWT token generation and validation |
+| Flutter (Dart) | Cross-platform web frontend |
+| Flask (Python) | REST API backend |
+| SQLAlchemy | ORM and database management |
+| SQLite | Local relational database |
+| Flask-CORS | Cross-origin request handling |
+| PyJWT | JWT token generation and verification |
 | Werkzeug | Password hashing |
-| Flutter / Dart | Cross-platform frontend (web target) |
-| HTTP package (Dart) | API communication from frontend |
-| shared_preferences | Local token storage on the client |
-
----
+| shared_preferences | Client-side token persistence |
 
 ## Project Structure
 
 ```
 hackathon-platform/
 ├── backend/
-│   ├── app.py              # Flask REST API — all models, routes, and auth logic
+│   ├── app.py              # Flask REST API — all routes, models, auth
 │   └── requirements.txt    # Python dependencies
 ├── frontend/
 │   ├── lib/
-│   │   └── main.dart       # Complete Flutter application
+│   │   └── main.dart       # Flutter app — all screens and API calls
 │   └── pubspec.yaml        # Flutter dependencies
-├── setup.sh                # Automated setup script
 └── README.md
 ```
 
----
-
 ## Installation & Setup
 
-### Option 1 — Automated setup
+### Backend
 
 ```bash
+# 1. Clone the repository
 git clone https://github.com/nihalalarifi/hackathon-platform.git
-cd hackathon-platform
-chmod +x setup.sh
-./setup.sh
-```
+cd hackathon-platform/backend
 
-### Option 2 — Manual setup
+# 2. Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
 
-**Backend:**
+# 3. Install dependencies
+pip install -r requirements.txt
 
-```bash
-cd backend
-pip3 install -r requirements.txt
+# 4. Configure environment
+# Open app.py and set a real SECRET_KEY before running in production
+
+# 5. Run the backend
 python3 app.py
-# API runs at http://localhost:5000
+# API will be available at http://localhost:5000
 ```
 
-**Frontend:**
+### Frontend
 
 ```bash
-cd frontend
+# 1. Install Flutter SDK from https://flutter.dev if not already installed
 
-# Install Flutter dependencies
+# 2. Navigate to the frontend directory
+cd hackathon-platform/frontend
+
+# 3. Install dependencies
 flutter pub get
 
-# Configure the backend URL
-# Open lib/main.dart and update the baseUrl variable:
-# Change: http://YOUR_BACKEND_HOST:5000/api
-# To:     http://localhost:5000/api  (or your server's IP)
+# 4. Set your backend URL
+# Open lib/main.dart and update:
+#   static const String baseUrl = 'http://YOUR_BACKEND_HOST:5000/api';
 
-# Run in browser
-flutter run -d chrome
+# 5. Run the app
+flutter run -d chrome   # for web
+# or
+flutter run             # for connected device
 ```
 
----
+## Environment Variables
 
-## Environment Configuration
+Before running in production, set the following in `backend/app.py`:
 
-Before running, update the following values:
-
-**backend/app.py**
-```python
-app.config['SECRET_KEY'] = 'YOUR_SECRET_KEY_HERE'
-# Replace with a strong random string, e.g.:
-# python3 -c "import secrets; print(secrets.token_hex(32))"
+```
+SECRET_KEY=YOUR_SECRET_KEY_HERE
 ```
 
-**frontend/lib/main.dart**
-```dart
-static const String baseUrl = 'http://YOUR_BACKEND_HOST:5000/api';
-// Replace YOUR_BACKEND_HOST with localhost or your server IP
-```
+Generate a strong key with: `python3 -c "import secrets; print(secrets.token_hex(32))"`
 
----
+## API Endpoints
 
-## API Overview
-
-| Method | Endpoint | Role | Description |
-|---|---|---|---|
-| POST | /api/register | Public | Create a user account |
-| POST | /api/login | Public | Authenticate and receive JWT token |
-| GET | /api/profile | Any | Get current user profile |
-| POST | /api/register/participant | Any | Register as a participant |
-| POST | /api/register/mentor | Any | Register as a mentor |
-| POST | /api/register/judge | Any | Register as a judge |
-| GET | /api/teams | Any | List all teams |
-| POST | /api/teams | Participant | Create a team |
-| POST | /api/teams/:id/join | Participant | Join a team |
-| GET | /api/mentor/sessions | Any | Browse mentor sessions |
-| POST | /api/mentor/sessions | Mentor | Create a session |
-| PUT | /api/mentor/sessions/:id | Mentor | Update a session |
-| DELETE | /api/mentor/sessions/:id | Mentor | Delete a session |
-| POST | /api/judge/select-winner | Judge | Nominate a winning team |
-| GET | /api/schedule | Any | View event schedule |
-| POST | /api/schedule | Organizer | Add a schedule item |
-
----
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /api/register | Create a new user account |
+| POST | /api/login | Authenticate and receive JWT |
+| GET | /api/profile | Get current user profile |
+| POST | /api/register/:role | Register as participant / mentor / judge / organizer |
+| GET | /api/teams | List all teams |
+| POST | /api/teams | Create a new team |
+| POST | /api/teams/:id/join | Join a team |
+| GET | /api/mentor/sessions | List mentoring sessions |
+| POST | /api/mentor/sessions | Create a session |
+| PUT | /api/mentor/sessions/:id | Edit a session |
+| DELETE | /api/mentor/sessions/:id | Delete a session |
+| POST | /api/judge/select-winner | Select a winning team |
+| GET | /api/schedule | Get event schedule |
+| POST | /api/schedule | Add a schedule item |
 
 ## Technical Challenge
 
-The trickiest part was handling CORS correctly for the Flutter web target.
+The hardest problem was designing a single REST API that serves four completely different user roles without duplicating logic or exposing restricted endpoints.
 
-Flutter web compiles to JavaScript and runs in a browser, which enforces strict CORS policies. Unlike a native mobile app, every API call goes through the browser's preflight check — meaning the backend had to respond correctly to `OPTIONS` requests before the real request was even attempted. The default Flask-CORS setup was not sufficient because preflight responses were missing the right headers, causing the frontend to silently fail.
-
-The fix required adding an explicit `OPTIONS` route that catches all `/api/*` paths and returns the correct headers with a `Access-Control-Max-Age` to cache preflight results, plus an `after_request` hook to ensure headers were always attached to actual responses. This brought the frontend-backend communication to a fully working state under Flutter web's stricter browser environment.
-
----
+The solution was a JWT-based token system that encodes the user's role at login, combined with a reusable `token_required` decorator that validates the token on every protected route. Role-specific routes simply check the decoded role field and return 403 if it does not match — keeping authorization logic co-located with each route rather than scattered across middleware layers. This made it straightforward to add the mentor edit/delete endpoints later without touching the auth system at all.
 
 ## License
 
