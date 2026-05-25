@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+*.egg-info/
+
+# Flask / SQLite
+instance/
+*.db
+*.sqlite
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+*.iml
+.packages
+pubspec.lock
+
+# OS
+.DS_Store
+__MACOSX/
+Thumbs.db
