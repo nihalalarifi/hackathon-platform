@@ -4,17 +4,17 @@ A full stack platform for managing hackathon events, built with a Flutter web fr
 
 ## Why We Built This
 
-Organizing a hackathon involves coordinating many moving parts: team formation, mentoring sessions, judging, and scheduling — typically handled through disconnected spreadsheets and group chats. This platform centralizes everything into one system, giving each role exactly the tools they need without the noise of everything else.
+Organizing a hackathon involves coordinating many moving parts: team formation, mentoring sessions, judging, and scheduling typically handled through disconnected spreadsheets and group chats. This platform centralizes everything into one system, giving each role exactly the tools they need without the noise of everything else.
 
 ## Features
 
 - **Role-based access control** : four distinct roles (Participant, Mentor, Judge, Organizer), each with a dedicated dashboard and permissions
-- **Team management** : participants can create teams, invite others, and view team status in real time
-- **Mentoring sessions** : mentors can schedule, edit, and delete sessions; participants can view and book them by team
-- **Judging system** : judges can select and remove winners with full audit visibility
-- **Event scheduling** : organizers can create and manage the hackathon schedule
-- **JWT authentication** : secure stateless auth with token based session management
-- **Flutter web frontend** : single-page app with a dark cyberpunk-inspired UI, runs in any browser
+- **Team management**: participants can create teams, invite others, and view team status in real time
+- **Mentoring sessions**: mentors can schedule, edit, and delete sessions; participants can view and book them by team
+- **Judging system**: judges can select and remove winners with full audit visibility
+- **Event scheduling**: organizers can create and manage the hackathon schedule
+- **JWT authentication**: secure stateless auth with token based session management
+- **Flutter web frontend**: single-page app with a dark cyberpunk-inspired UI, runs in any browser
 
 ## Tech Stack
 
